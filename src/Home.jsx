@@ -2,6 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Member from './Member.jsx'
+import { Link } from 'react-router-dom'
 
 function Home() {
   const [members, setMembers] = useState([])
@@ -49,7 +50,10 @@ function Home() {
           </div>
         </div>
         <div>
-          <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
+          <Link to="/result"
+            state={members}>
+            <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
+          </Link>
         </div>
     </div>
     </>
