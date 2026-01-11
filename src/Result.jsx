@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-
+import Teamsheet from './Teamsheet';
+import { Link } from 'react-router-dom'
 
 function Result({name, onEdit, onRemove}) {
     const {state} = useLocation();
@@ -16,7 +17,7 @@ function Result({name, onEdit, onRemove}) {
         }
 
         const teamGroup = Array.from({ length: teamNumber }, () => []);
-
+        
         array.forEach((member, index) => {
             teamGroup[index % teamNumber].push(member);
         });
@@ -24,21 +25,26 @@ function Result({name, onEdit, onRemove}) {
     }
 
     useEffect(() => {
-        setTeams(randomize(members));
-        console.log(teams);
-        const teamsContainer = document.getElementById('teams-container');
-        teamsContainer.innerHTML = '';
+        const randomizedTeams = randomize(members);
+        console.log('randomizedTeams:', randomizedTeams);
+        setTeams(randomizedTeams);
     },[members]);
 
     return (
         <>
-        <div className='flex items-center justify-center flex-col p-[10vh] min-h-dvh gap-[10vh] overflow-y-auto'>
+        <div className='flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-y-auto'>
             <div>Here are the teams:</div>
-            <div id="teams-container" className='flex flex-col gap-4'>
-                <div id="team-info">
-                    <div>Team Name</div>
-                    <div id="team-member-section"></div>
+            <div id="teams-container" className='flex justify-center items-center gap-4'>
+                <div id="team-member-section" className='flex flex-row gap-[10vw]'>
+                    {teams.length > 0 && teams.map((team, index) => (
+                        <Teamsheet key={index} members={team} />
+                    ))}
                 </div>
+            </div>
+            <div>
+                <Link to="/">
+                    <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Go Back</button>
+                </Link>
             </div>
         </div>
         </>
