@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import Member from './Member.jsx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate} from 'react-router-dom'
+
 
 function Home() {
-  const [members, setMembers] = useState([])
+  const [members, setMembers] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const stored = localStorage.getItem('members');
+    if (stored) {
+      setMembers(JSON.parse(stored));
+    }
+  }, []);
 
   const addMember = (name) => {
     if (!name.trim()) return;
@@ -19,6 +28,11 @@ function Home() {
   
   const removeMember = (id) => {
     setMembers(members.filter(member => member.id !== id))
+  }
+
+  const buildTeams = () => {
+    localStorage.setItem('members', JSON.stringify(members));
+    navigate('/result', { state: members });
   }
 
   return (
@@ -42,18 +56,15 @@ function Home() {
         </div>
         <div className='flex flex-col items-center gap-4'>
           <h2 className='text-lg font-bold'>Party List</h2>
-          <div className='border border-gray-300 rounded-lg px-4 py-2 w-[30vw] flex flex-col items-center gap-2 py-3' id="party-list">
-            {members.length === 0 && <div className='w-full border border-gray-300 rounded-lg px-4 py-2 text-center'>No members added yet.</div>}
+          <div className='border border-gray-300 rounded-lg px-[2vw] py-[2vh] w-[30vw] flex flex-col items-center gap-2 py-3 field-sizing-content' id="party-list">
+            {members.length === 0 && <div className='w-full border border-gray-300 rounded-lg px-[2vw] py-[1vh] text-center'>No members added yet.</div>}
             {members.map((member) => (
               <Member key={member.id} name={member.name} onEdit={(newName) => editMember(member.id, newName)} onRemove={() => removeMember(member.id)} />
             ))}
           </div>
         </div>
         <div>
-          <Link to="/result"
-            state={members}>
-            <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
-          </Link>
+            <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
         </div>
     </div>
     </>

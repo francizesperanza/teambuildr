@@ -42,7 +42,8 @@ function Result({name, onEdit, onRemove}) {
                 </div>
             </div>
             <div>
-                <Link to="/">
+                <Link to="/"
+                    state={members}>
                     <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Go Back</button>
                 </Link>
             </div>
