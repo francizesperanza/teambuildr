@@ -20,6 +20,7 @@ function Home() {
     if (!name.trim()) return;
     const newMember = { id: crypto.randomUUID(), name }
     setMembers([...members, newMember])
+    document.getElementById("member_field").value = '';
   }
 
   const editMember = (id, newName) => {
