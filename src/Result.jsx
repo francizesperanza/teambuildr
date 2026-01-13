@@ -9,6 +9,7 @@ function Result({name, onEdit, onRemove}) {
     const members = state || [];
     const teamNumber = 2; // Default team number
     const [teams, setTeams] = useState([]);
+    const [animating, setAnimating] = useState(true);
 
     const [teamNames, setTeamNames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -60,18 +61,18 @@ function Result({name, onEdit, onRemove}) {
     return (
         <>
         <div className='flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden'>
-            <div>Here are the teams:</div>
+            <div className={animating ? 'opacity-0' : 'opacity-100'}>Here are the teams:</div>
             <div id="teams-container" className='flex justify-center items-center gap-4 overflow-visible'>
                 <div id="team-member-section" className='overflow-visible flex flex-row gap-[10vw]'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} members={team} />
+                        <Teamsheet key={index} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
             <div>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Go Back</button>
+                    <button type="button" className={`bg-blue-500 px-6 py-3 rounded-lg text-white ${animating ? 'opacity-0' : 'opacity-100'}`} id="back-btn">Go Back</button>
                 </Link>
             </div>
         </div>

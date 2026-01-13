@@ -5,10 +5,9 @@ import Member from './Member.jsx'
 import { Link } from 'react-router-dom'
 import { animate, stagger, createScope, set } from 'animejs'
 
-function Teamsheet({members}) {
+function Teamsheet({members, animating, setAnimating}) {
   const scope = useRef(null);
   const root = useRef(null);
-  const [animating, setAnimating] = useState(true);
 
   const minX = -window.innerWidth / 2 + 100;
   const minY = -window.innerHeight / 2 + 100;
