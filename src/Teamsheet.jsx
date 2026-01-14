@@ -5,7 +5,7 @@ import Member from './Member.jsx'
 import { Link } from 'react-router-dom'
 import { animate, stagger, createScope, set } from 'animejs'
 
-function Teamsheet({members, teamName, animating, setAnimating}) {
+function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
   const scope = useRef(null);
   const root = useRef(null);
 
@@ -70,10 +70,10 @@ function Teamsheet({members, teamName, animating, setAnimating}) {
   return (
     <>
       <div ref={root} className='overflow-visible flex items-center justify-center flex-col p-[2vh] gap-4'>
-          <div className={animating ? 'opacity-0' : 'opacity-100'}>Team {teamName}</div>
-          <div id="members-container" className='overflow-visible flex flex-wrap gap-3 justify-center items-center bg-green-200 px-[3vw] py-[7vh] rounded-full'>
+          <div className={'rounded-lg px-[1vw] py-[1vh]' + (teamColor ? ' ' + teamColor[1] : '') + (animating ? ' opacity-0' : ' opacity-100')}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
+          <div id="members-container" className={`overflow-visible flex flex-wrap gap-3 justify-around items-around px-[3vw] py-[7vh] rounded-full ${animating ? 'bg-gray-200' : teamColor[1]}`} >
               {members.map((member) => (
-                  <div className='member-container flex flex-[30%] flex-col items-center justify-center gap-2' key={member.id}>
+                  <div className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
                     <div className='member-avatar border-black border bg-red-100 px-2 py-4 rounded-lg'></div>
                     <div className='member-name' key={member.id}>{member.name}</div>
                   </div>

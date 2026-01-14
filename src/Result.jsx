@@ -2,6 +2,7 @@ import { use, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Teamsheet from './Teamsheet'
 import { Link } from 'react-router-dom'
+import { set } from 'animejs';
 
 
 function Result({name, onEdit, onRemove}) {
@@ -12,8 +13,18 @@ function Result({name, onEdit, onRemove}) {
     const [animating, setAnimating] = useState(true);
 
     const [teamNames, setTeamNames] = useState([]);
+    const [teamColors, setTeamColors] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const teamColorMap = {
+        'Red': 'bg-red-200',
+        'Blue': 'bg-blue-200',
+        'Green': 'bg-green-200',
+        'Yellow': 'bg-yellow-200',
+        'Purple': 'bg-purple-200',
+        'Pink': 'bg-pink-200'
+    }
 
     const capitalize = (word) => {
         var words = word.split(' ');
@@ -42,6 +53,20 @@ function Result({name, onEdit, onRemove}) {
         return arr;
     };
 
+    const randomizeTeamColors = () => {
+        const colors = Object.entries(teamColorMap);
+        let selectedColors = [];
+        while (selectedColors.length < teamNumber) {
+            const randomIndex = Math.floor(Math.random() * colors.length);
+            const color = colors[randomIndex];  
+            if (!selectedColors.includes(color)) {
+                selectedColors.push(color);
+            }
+        }
+        console.log(selectedColors);
+        return selectedColors;
+    };
+
     const randomize = (arr) => {
         let array = arr.slice();
         for (let i = array.length - 1; i > 0; i--) {
@@ -59,7 +84,6 @@ function Result({name, onEdit, onRemove}) {
 
     useEffect(() => {
         const randomizedTeams = randomize(members);
-        console.log('randomizedTeams:', randomizedTeams);
         setTeams(randomizedTeams);
     },[members]);
 
@@ -74,6 +98,7 @@ function Result({name, onEdit, onRemove}) {
         })
         .then(data => {
             setTeamNames(pluralize(data));
+            setTeamColors(randomizeTeamColors());
             setLoading(false);
         })
         .catch(error => {
@@ -91,7 +116,7 @@ function Result({name, onEdit, onRemove}) {
             <div id="teams-container" className='flex justify-center items-center gap-4 overflow-visible'>
                 <div id="team-member-section" className='overflow-visible flex flex-row gap-[10vw]'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
