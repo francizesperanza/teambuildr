@@ -15,6 +15,32 @@ function Result({name, onEdit, onRemove}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const capitalize = (word) => {
+        var words = word.split(' ');
+        var capitalizedWords = words.map(w => {
+            return w.charAt(0).toUpperCase() + w.slice(1);
+        });
+        return capitalizedWords.join(' ');
+    }
+
+    const pluralize = (data) => {
+        var arr;
+        arr = data.map(item => {
+            var capitalizedWords = capitalize(item.word);
+            if (capitalizedWords.endsWith('s') || capitalizedWords.endsWith('x') || capitalizedWords.endsWith('z') || capitalizedWords.endsWith('ch') || capitalizedWords.endsWith('sh')) {
+                return capitalizedWords + 'es';
+            } else if (capitalizedWords.endsWith('ouse')) {
+                return capitalizedWords.replace('ouse', 'ice');
+            } else if (capitalizedWords.endsWith('y') && !['a','e','i','o','u'].includes(capitalizedWords.charAt(capitalizedWords.length - 2).toLowerCase())) {
+                return capitalizedWords.slice(0, -1) + 'ies';
+            } else if (capitalizedWords.endsWith('Goose')) {
+                return capitalizedWords.replace('Goose', 'Geese');
+            } else {
+                return capitalizedWords + 's';
+            }
+        });
+        return arr;
+    };
 
     const randomize = (arr) => {
         let array = arr.slice();
@@ -39,7 +65,7 @@ function Result({name, onEdit, onRemove}) {
 
     // fetch random animal words from word API
     useEffect(() => {
-        fetch('https://random-words-api.kushcreates.com/api?category=animals&type=capitalized&words='+teamNumber)
+        fetch('https://random-words-api.kushcreates.com/api?language=en&category=animals&type=capitalized&words='+teamNumber)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -47,7 +73,7 @@ function Result({name, onEdit, onRemove}) {
             return response.json();
         })
         .then(data => {
-            setTeamNames(data);
+            setTeamNames(pluralize(data));
             setLoading(false);
         })
         .catch(error => {
@@ -65,7 +91,7 @@ function Result({name, onEdit, onRemove}) {
             <div id="teams-container" className='flex justify-center items-center gap-4 overflow-visible'>
                 <div id="team-member-section" className='overflow-visible flex flex-row gap-[10vw]'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>

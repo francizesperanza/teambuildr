@@ -57,7 +57,7 @@ function Home() {
         </div>
         <div className='flex flex-col items-center gap-4'>
           <h2 className='text-lg font-bold'>Party List</h2>
-          <div className='border border-gray-300 rounded-lg px-[2vw] py-[2vh] w-[30vw] flex flex-col items-center gap-2 py-3 field-sizing-content' id="party-list">
+          <div className='overflow-y-auto max-h-[50vh] border border-gray-300 rounded-lg px-[2vw] py-[2vh] w-[30vw] flex flex-col items-center gap-2 py-3 field-sizing-content' id="party-list">
             {members.length === 0 && <div className='w-full border border-gray-300 rounded-lg px-[2vw] py-[1vh] text-center'>No members added yet.</div>}
             {members.map((member) => (
               <Member key={member.id} name={member.name} onEdit={(newName) => editMember(member.id, newName)} onRemove={() => removeMember(member.id)} />
