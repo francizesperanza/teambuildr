@@ -8,7 +8,7 @@ import { set } from 'animejs';
 function Result({name, onEdit, onRemove}) {
     const {state} = useLocation();
     const members = state || [];
-    const teamNumber = 2; // Default team number
+    const teamNumber = 3; // Default team number
     const [teams, setTeams] = useState([]);
     const [animating, setAnimating] = useState(true);
 
@@ -111,10 +111,10 @@ function Result({name, onEdit, onRemove}) {
 
     return (
         <>
-        <div className='flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden'>
+        <div className='flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh] white-gradient'>
             <div className={animating ? 'opacity-0' : 'opacity-100'}>Here are the teams:</div>
-            <div id="teams-container" className='flex justify-center items-center gap-4 overflow-visible'>
-                <div id="team-member-section" className='overflow-visible flex flex-row gap-[10vw]'>
+            <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
+                <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
                         <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}

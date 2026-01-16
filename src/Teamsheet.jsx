@@ -33,6 +33,35 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
     return selectedSprites;
   }
 
+  const onSpriteHover = (e) => {
+    if (animating) return;
+    animate(e.currentTarget.querySelector('.member-avatar'),{
+        scale: [
+          { to: 1.2, duration: 200 },
+        ]
+    });
+    animate(e.currentTarget.querySelector('.member-name'),{
+        scale: [
+          { to: 1.2, duration: 200 },
+        ]
+    });
+  }
+
+  const onSpriteLeave = (e) => {
+    if (animating) return;
+    animate(e.currentTarget.querySelector('.member-avatar'),{
+        scale: [
+          { to: 1, duration: 100},
+        ],
+    });
+
+    animate(e.currentTarget.querySelector('.member-name'),{
+        scale: [
+          { to: 1, duration: 100},
+        ],
+    });
+  }
+
   //animation
     useEffect(() => {
         setSprites(randomizeSprites());
@@ -88,11 +117,11 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
 
   return (
     <>
-      <div ref={root} className='overflow-visible flex items-center justify-center flex-col p-[2vh] gap-4'>
-          <div className={'rounded-lg px-[1vw] py-[1vh]' + (teamColor ? ' ' + teamColor[1] : '') + (animating ? ' opacity-0' : ' opacity-100')}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
-          <div id="members-container" className={`overflow-visible flex flex-wrap gap-3 justify-around items-around px-[3vw] py-[7vh] rounded-full ${animating ? 'bg-gray-200' : teamColor[1]}`} >
+      <div ref={root} className='overflow-visible flex-[40%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
+          <div className={'text-center rounded-lg px-[1vw] py-[1vh]' + (teamColor ? ' ' + teamColor[1] : '') + (animating ? ' opacity-0' : ' opacity-100')}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
+          <div id="members-container" className={`overflow-visible flex flex-wrap gap-3 justify-around items-around px-[2vw] py-[2vh] w-[90%] rounded-full ${animating ? 'bg-[url(./assets/teambuildr_bg_tile.svg)]' : teamColor[1]}`} >
               {members.map((member, index) => (
-                  <div className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
+                  <div onMouseLeave={onSpriteLeave} onMouseEnter={onSpriteHover} className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
                     <img src={sprites[index]} alt="avatar" className='member-avatar w-[4.5vw] h-[4.5vw]'/>
                     <div className='member-name' key={member.id}>{member.name}</div>
                   </div>
