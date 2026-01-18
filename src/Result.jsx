@@ -18,12 +18,12 @@ function Result({name, onEdit, onRemove}) {
     const [error, setError] = useState(null);
 
     const teamColorMap = {
-        'Red': 'bg-red-200',
-        'Blue': 'bg-blue-200',
-        'Green': 'bg-green-200',
-        'Yellow': 'bg-yellow-200',
-        'Purple': 'bg-purple-200',
-        'Pink': 'bg-pink-200'
+        'Red': 'rgb(226, 59, 59)',
+        'Blue': 'rgb(128, 190, 253)',
+        'Green': 'rgb(37, 211, 83)',
+        'Yellow': 'rgb(255, 252, 94)',
+        'Purple': 'rgb(193, 142, 255)',
+        'Pink': 'rgb(255, 174, 212)'
     }
 
     const capitalize = (word) => {
@@ -121,6 +121,7 @@ function Result({name, onEdit, onRemove}) {
                 </div>
             </div>
             <div>
+                <button type="button" className={`bg-green-500 px-6 py-3 rounded-lg text-white mr-4 ${animating ? 'opacity-0' : 'opacity-100'}`} id="rebuild-btn">Copy to Clipboard</button>
                 <Link to="/"
                     state={members}>
                     <button type="button" className={`bg-blue-500 px-6 py-3 rounded-lg text-white ${animating ? 'opacity-0' : 'opacity-100'}`} id="back-btn">Go Back</button>

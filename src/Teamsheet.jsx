@@ -136,29 +136,6 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
                 ] 
             });
 
-            animate( '.members-container',{
-                outlineWidth:[
-                  { to: 0, duration: 0},
-                  { to: 20, duration: 1500},
-                  { to: 5, duration: 700,},
-                  { to: 20, duration: 700},
-                  { to: 5, duration: 500},
-                ],
-                outlineColor:[
-                  { to: 'rgba(255, 255, 255, 0)', duration: 0},
-                  { to: 'rgba(255, 255, 255, 1)', duration: 1000},
-                  { to: 'rgba(255, 255, 255, .5)', duration: 500},
-                  { to: 'rgba(255, 255, 255, 1)', duration: 700},
-                ],
-                outlineOffset:[
-                  { to: 0, duration: 0},
-                  { to: -20, duration: 1500},
-                  { to: -5, duration: 700,},
-                  { to: -20, duration: 700,},
-                  { to: 0, duration: 700},
-                ],
-            });
-
             return () => scope.current.revert();
         })
     }, []);
@@ -166,8 +143,11 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
   return (
     <>
       <div ref={root} className='overflow-visible flex-[40%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
-          <div className={'text-center rounded-lg px-[1vw] py-[1vh]' + (teamColor ? ' ' + teamColor[1] : '') + (animating ? ' opacity-0' : ' opacity-100')}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
-          <div className={`members-container outline-2 outline-white overflow-visible flex flex-wrap gap-3 justify-around items-around px-[2vw] py-[2vh] w-[90%] rounded-full ${animating ? 'bg-transparent' : teamColor[1]}`} >
+          <div className={'font-bold outline-dashed outline-black outline-2 text-center rounded-full px-[1vw] py-[1vh]' + (animating ? ' opacity-0' : ' opacity-100')}
+          style={{backgroundColor: teamColor ? teamColor[1]: undefined}}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
+
+          <div className={`members-container outline-dashed outline-black overflow-visible flex flex-wrap gap-3 justify-around items-around px-[5vw] py-[5vh] max-w-[30vw] rounded-full` + (animating ? ' outline-0' : ' outline-2')}
+          style={{backgroundColor: animating ? 'transparent': teamColor?.[1]}}>
               {members.map((member, index) => (
                   <div onMouseLeave={onSpriteLeave} onMouseEnter={onSpriteHover} className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
                     <span className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar w-[4.5vw] h-[4.5vw]'/></span>
