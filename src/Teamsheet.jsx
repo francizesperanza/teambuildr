@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import Member from './Member.jsx'
 import { Link } from 'react-router-dom'
 import { animate, stagger, createScope, set, random } from 'animejs'
+import './Teamsheet.css'
 
 function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
   const scope = useRef(null);
@@ -35,12 +36,12 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
 
   const onSpriteHover = (e) => {
     if (animating) return;
-    animate(e.currentTarget.querySelector('.member-avatar'),{
+    animate(e.currentTarget.querySelector('.member-name'),{
         scale: [
           { to: 1.2, duration: 200 },
         ]
     });
-    animate(e.currentTarget.querySelector('.member-name'),{
+    animate(e.currentTarget.querySelector('.sprite-shadow'),{
         scale: [
           { to: 1.2, duration: 200 },
         ]
@@ -49,13 +50,14 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
 
   const onSpriteLeave = (e) => {
     if (animating) return;
-    animate(e.currentTarget.querySelector('.member-avatar'),{
+
+    animate(e.currentTarget.querySelector('.member-name'),{
         scale: [
           { to: 1, duration: 100},
         ],
     });
 
-    animate(e.currentTarget.querySelector('.member-name'),{
+    animate(e.currentTarget.querySelector('.sprite-shadow'),{
         scale: [
           { to: 1, duration: 100},
         ],
@@ -98,17 +100,63 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
             animate( '.member-avatar',{
                 rotate: [
                   { to: -10, delay: 1725, duration: 50},
-                  { to: 10, duration: 375},
-                  { to: -10, duration: 375},
-                  { to: 10, duration: 375},
-                  { to: 0, duration: 375},
-                  { to: 10, duration: 250, delay: 100},
-                  { to: 0, duration: 250},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: 10, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -10, delay: 50, duration: 175},
+                  { to: 0, duration: 250, delay: 100},
+                  { to: 10, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
                 ],
                 translateY:[
-                  { to: -40, delay: 3900, duration: stagger(50)},
+                  { to: -20, delay: 1725, duration: 50},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 200, duration: 175, },
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -40, delay: 600, duration: stagger(50)},
                   { to: 0, duration: 25},
                 ]
+            });
+
+            animate( '.member-name, .sprite-shadow',{
+                translateY:[
+                  { to: -20, delay: 1725, duration: 50},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 50, duration: 175},
+                  { to: 0, delay: 50, duration: 175},
+                  { to: -20, delay: 200, duration: 175, },
+                  { to: 0, delay: 50, duration: 175},
+                  { to: 0, duration: 25},
+                ] 
+            });
+
+            animate( '.members-container',{
+                outlineWidth:[
+                  { to: 0, duration: 0},
+                  { to: 20, duration: 1500},
+                  { to: 5, duration: 700,},
+                  { to: 20, duration: 700},
+                  { to: 5, duration: 500},
+                ],
+                outlineColor:[
+                  { to: 'rgba(255, 255, 255, 0)', duration: 0},
+                  { to: 'rgba(255, 255, 255, 1)', duration: 1000},
+                  { to: 'rgba(255, 255, 255, .5)', duration: 500},
+                  { to: 'rgba(255, 255, 255, 1)', duration: 700},
+                ],
+                outlineOffset:[
+                  { to: 0, duration: 0},
+                  { to: -20, duration: 1500},
+                  { to: -5, duration: 700,},
+                  { to: -20, duration: 700,},
+                  { to: 0, duration: 700},
+                ],
             });
 
             return () => scope.current.revert();
@@ -119,10 +167,10 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
     <>
       <div ref={root} className='overflow-visible flex-[40%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
           <div className={'text-center rounded-lg px-[1vw] py-[1vh]' + (teamColor ? ' ' + teamColor[1] : '') + (animating ? ' opacity-0' : ' opacity-100')}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
-          <div id="members-container" className={`overflow-visible flex flex-wrap gap-3 justify-around items-around px-[2vw] py-[2vh] w-[90%] rounded-full ${animating ? 'bg-[url(./assets/teambuildr_bg_tile.svg)]' : teamColor[1]}`} >
+          <div className={`members-container outline-2 outline-white overflow-visible flex flex-wrap gap-3 justify-around items-around px-[2vw] py-[2vh] w-[90%] rounded-full ${animating ? 'bg-transparent' : teamColor[1]}`} >
               {members.map((member, index) => (
                   <div onMouseLeave={onSpriteLeave} onMouseEnter={onSpriteHover} className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
-                    <img src={sprites[index]} alt="avatar" className='member-avatar w-[4.5vw] h-[4.5vw]'/>
+                    <span className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar w-[4.5vw] h-[4.5vw]'/></span>
                     <div className='member-name' key={member.id}>{member.name}</div>
                   </div>
               ))}

@@ -1,0 +1,13 @@
+.sprite-shadow::after{
+    content: "";
+    position: absolute;
+    top: 95%;
+    bottom: 0;
+    left: 28%;
+    right: 0;
+    width: 2vw;
+    height: 1vh;
+    z-index: -1;
+    border-radius: 2rem;
+    background: rgb(0,0,0,0.3);
+}
