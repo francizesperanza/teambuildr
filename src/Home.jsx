@@ -3,6 +3,7 @@ import Member from './Member.jsx'
 import { Link, useNavigate} from 'react-router-dom'
 import './Home.css'
 import { toast, ToastContainer } from 'react-toastify';
+import { Cog6ToothIcon } from '@heroicons/react/20/solid';
 
 function Home() {
   const [members, setMembers] = useState([]);
@@ -53,10 +54,9 @@ function Home() {
     <ToastContainer />
     <div className='flex min-h-dvh w-full overflow-y-auto'>
       <div className='builder-panel flex flex-2 items-center justify-center flex-col p-[10vh] min-h-dvh gap-[10vh] overflow-y-auto'>
-        <div className='flex items-center justify-center flex-col gap-2 overflow-y-auto'>
-          <h1 className='text-5xl'>teambuilder</h1>
+        <div className='flex items-center justify-center flex-col gap-2 overflow-visible'>
+          <h1 className='title text-8xl'>teambuildr</h1>
           <div>Divide a party into teams!</div>
-          <div>Teams: <span>2</span></div>
         </div>
         <div className='flex items-center justify-center flex-col gap-1 overflow-y-auto'>
           <h2 className='text-lg font-bold'>Party Members</h2>
@@ -78,6 +78,14 @@ function Home() {
               <Member key={member.id} name={member.name} onEdit={(newName) => editMember(member.id, newName)} onRemove={() => removeMember(member.id)} />
             ))}
           </div>
+        </div>
+        <div className='flex items-center justify-around gap-5 w-[30vw]'>
+          <div className='flex justify-center items-center gap-3 border border-gray-300 rounded-lg px-4 py-2 flex-1 text-center'>
+            <div className='font-bold text-2xl'>2</div>
+            Teams
+          </div>
+          <button type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
+            <Cog6ToothIcon className="h-5 w-5 inline" /></button>
         </div>
         <div>
             <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
