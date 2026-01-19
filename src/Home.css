@@ -1,0 +1,15 @@
+.home-anim{
+    background-image: url(./assets/teambuildr_bg_tile.svg);
+    background-repeat: repeat;
+    background-size: 40vh;
+    animation: droning 10s linear infinite;
+}
+
+@keyframes droning {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -40vh 40vh;
+    }
+}

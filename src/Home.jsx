@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import Member from './Member.jsx'
 import { Link, useNavigate} from 'react-router-dom'
-
+import './Home.css'
+import { toast, ToastContainer } from 'react-toastify';
 
 function Home() {
   const [members, setMembers] = useState([]);
@@ -30,12 +31,28 @@ function Home() {
   }
 
   const buildTeams = () => {
+    if(members.length < 2) {
+      toast.error('Please add at least 2 members to build teams.', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
     localStorage.setItem('members', JSON.stringify(members));
     navigate('/result', { state: members });
   }
 
   return (
-    <><div className='flex items-center justify-center flex-col p-[10vh] min-h-dvh gap-[10vh] overflow-y-auto'>
+    <>
+    <ToastContainer />
+    <div className='flex min-h-dvh w-full overflow-y-auto'>
+      <div className='builder-panel flex flex-2 items-center justify-center flex-col p-[10vh] min-h-dvh gap-[10vh] overflow-y-auto'>
         <div className='flex items-center justify-center flex-col gap-2 overflow-y-auto'>
           <h1 className='text-5xl'>teambuilder</h1>
           <div>Divide a party into teams!</div>
@@ -65,6 +82,8 @@ function Home() {
         <div>
             <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
         </div>
+      </div>
+      <div className='home-anim flex-2'></div>
     </div>
     </>
   )

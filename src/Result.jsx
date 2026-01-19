@@ -1,8 +1,12 @@
-import { use, useEffect, useState } from 'react'
+import { use, useEffect, useState} from 'react'
 import { useLocation } from 'react-router-dom'
 import Teamsheet from './Teamsheet'
 import { Link } from 'react-router-dom'
-import { set } from 'animejs';
+import { animate, set} from 'animejs';
+import { ClipboardDocumentIcon, ClipboardDocumentListIcon } from '@heroicons/react/16/solid';
+import { BackwardIcon } from '@heroicons/react/24/solid';
+import { ArrowLeftIcon } from '@heroicons/react/20/solid';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function Result({name, onEdit, onRemove}) {
@@ -82,9 +86,37 @@ function Result({name, onEdit, onRemove}) {
         return teamGroup;
     }
 
+    const copyToClipboard = () => {
+        let clipboardText = '';
+        let names = JSON.parse(localStorage.getItem('teamNames'));
+        let colors = JSON.parse(localStorage.getItem('teamColors'));
+        let teams = JSON.parse(localStorage.getItem('teams'));
+
+        names.forEach((name, index) => {
+            clipboardText += `${colors[index][0]} ${name}:\n`;
+            teams[index].forEach(member => {
+                clipboardText += `- ${member.name}\n`;
+            });
+            clipboardText += `\n`;
+        });
+
+        navigator.clipboard.writeText(clipboardText);
+        toast.success('Teams copied to clipboard!', {
+            position: "top-center",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+    }
+
     useEffect(() => {
         const randomizedTeams = randomize(members);
         setTeams(randomizedTeams);
+        localStorage.setItem('teams', JSON.stringify(randomizedTeams));
     },[members]);
 
     // fetch random animal words from word API
@@ -97,8 +129,14 @@ function Result({name, onEdit, onRemove}) {
             return response.json();
         })
         .then(data => {
-            setTeamNames(pluralize(data));
-            setTeamColors(randomizeTeamColors());
+            const pluralized = pluralize(data);
+            const colors = randomizeTeamColors();
+
+            setTeamNames(pluralized);
+            setTeamColors(colors);
+
+            localStorage.setItem('teamNames', JSON.stringify(pluralized));
+            localStorage.setItem('teamColors', JSON.stringify(colors));
             setLoading(false);
         })
         .catch(error => {
@@ -107,11 +145,10 @@ function Result({name, onEdit, onRemove}) {
         });
     }, []);
 
-    
-
     return (
         <>
-        <div className='flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh] white-gradient'>
+        <ToastContainer />
+        <div className='result-bg flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh]'>
             <div className={animating ? 'opacity-0' : 'opacity-100'}>Here are the teams:</div>
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
@@ -120,12 +157,15 @@ function Result({name, onEdit, onRemove}) {
                     ))}
                 </div>
             </div>
-            <div>
-                <button type="button" className={`bg-green-500 px-6 py-3 rounded-lg text-white mr-4 ${animating ? 'opacity-0' : 'opacity-100'}`} id="rebuild-btn">Copy to Clipboard</button>
+            <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className={`bg-blue-500 px-6 py-3 rounded-lg text-white ${animating ? 'opacity-0' : 'opacity-100'}`} id="back-btn">Go Back</button>
+                    <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white`} id="back-btn">
+                        <ArrowLeftIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Go Back</button>
                 </Link>
+
+                <button type="button" onClick={copyToClipboard} className={`bg-lime-500 px-6 py-3 rounded-lg text-white`} id="rebuild-btn">
+                    <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Copy to Clipboard</button>                
             </div>
         </div>
         </>
