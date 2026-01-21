@@ -153,7 +153,7 @@ function Result() {
         <>
         <ToastContainer />
         <div className='result-bg flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh]'>
-            <div className={animating ? 'opacity-0' : 'opacity-100'}>Here are the teams:</div>
+            <div className={`bg-white px-4 py-2 rounded-lg title text-5xl border-2 border-dashed` + (animating ? ' opacity-0' : ' opacity-100')}>Here are the teams:</div>
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
@@ -161,7 +161,7 @@ function Result() {
                     ))}
                 </div>
             </div>
-            <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg ' + (animating ? 'opacity-0' : 'opacity-100')}>
+            <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
                     <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white`} id="back-btn">

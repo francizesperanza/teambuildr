@@ -117,7 +117,7 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
                   { to: 0, delay: 50, duration: 175},
                   { to: -20, delay: 200, duration: 175, },
                   { to: 0, delay: 50, duration: 175},
-                  { to: -40, delay: 600, duration: stagger(50)},
+                  { to: -40, delay: 600, duration: stagger(100)},
                   { to: 0, duration: 25},
                 ]
             });
@@ -150,8 +150,8 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
           style={{backgroundColor: animating ? 'transparent': teamColor?.[1]}}>
               {members.map((member, index) => (
                   <div onMouseLeave={onSpriteLeave} onMouseEnter={onSpriteHover} className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
-                    <span className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar w-[4.5vw] h-[4.5vw]'/></span>
-                    <div className='member-name' key={member.id}>{member.name}</div>
+                    <span className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar min-w-[4vw] h-[4.5vw] object-contain'/></span>
+                    <div className='member-name bg-white rounded-full px-2 border-1' key={member.id}>{member.name}</div>
                   </div>
               ))}
           </div>
