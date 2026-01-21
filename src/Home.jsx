@@ -4,13 +4,21 @@ import { Link, useNavigate} from 'react-router-dom'
 import './Home.css'
 import { toast, ToastContainer } from 'react-toastify';
 import { Cog6ToothIcon } from '@heroicons/react/20/solid';
+import SettingsModal from './SettingsModal.jsx';
 
 function Home() {
   const [members, setMembers] = useState([]);
+  const [numTeams, setNumTeams] = useState(2);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const stored = localStorage.getItem('members');
+    const currentSettings = localStorage.getItem('settings');
+    if (currentSettings) {
+      const settings = JSON.parse(currentSettings);
+      setNumTeams(settings.numTeams);
+    }
     if (stored) {
       setMembers(JSON.parse(stored));
     }
@@ -45,8 +53,23 @@ function Home() {
       });
       return;
     }
+
+    if(members.length < numTeams) {
+      toast.error('You do not have enough members to build the specified number of teams.', {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
     localStorage.setItem('members', JSON.stringify(members));
-    navigate('/result', { state: members });
+    navigate('/result', { state: {members: members, numTeams: numTeams}});
   }
 
   return (
@@ -81,11 +104,12 @@ function Home() {
         </div>
         <div className='flex items-center justify-around gap-5 w-[30vw]'>
           <div className='flex justify-center items-center gap-3 border border-gray-300 rounded-lg px-4 py-2 flex-1 text-center'>
-            <div className='font-bold text-2xl'>2</div>
+            <div className='font-bold text-2xl'>{numTeams}</div>
             Teams
           </div>
-          <button type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
+          <button onClick={() => setIsSettingsOpen(true)} type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
             <Cog6ToothIcon className="h-5 w-5 inline" /></button>
+          <SettingsModal isOpen={isSettingsOpen} updateSettings={(newNum) => setNumTeams(newNum)} onClose={() => setIsSettingsOpen(false)} />
         </div>
         <div>
             <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>

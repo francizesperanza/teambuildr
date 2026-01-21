@@ -142,7 +142,7 @@ function Teamsheet({members, teamColor, teamName, animating, setAnimating}) {
 
   return (
     <>
-      <div ref={root} className='overflow-visible flex-[40%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
+      <div ref={root} className='overflow-visible flex-[20%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
           <div className={'font-bold outline-dashed outline-black outline-2 text-center rounded-full px-[1vw] py-[1vh]' + (animating ? ' opacity-0' : ' opacity-100')}
           style={{backgroundColor: teamColor ? teamColor[1]: undefined}}>{teamColor ? teamColor[0] : 'Team'} {teamName}</div>
 

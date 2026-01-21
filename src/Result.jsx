@@ -9,10 +9,10 @@ import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { ToastContainer, toast } from 'react-toastify';
 
 
-function Result({name, onEdit, onRemove}) {
+function Result() {
     const {state} = useLocation();
-    const members = state || [];
-    const teamNumber = 3; // Default team number
+    const members = state?.members;
+    const teamNumber = state?.numTeams;
     const [teams, setTeams] = useState([]);
     const [animating, setAnimating] = useState(true);
 
@@ -27,7 +27,11 @@ function Result({name, onEdit, onRemove}) {
         'Green': 'rgb(37, 211, 83)',
         'Yellow': 'rgb(255, 252, 94)',
         'Purple': 'rgb(193, 142, 255)',
-        'Pink': 'rgb(255, 174, 212)'
+        'Pink': 'rgb(255, 174, 212)',
+        'Orange': 'rgb(255, 153, 0)',
+        'Teal': 'rgb(55, 219, 172)',
+        'Brown': 'rgb(182, 70, 19)',
+        'Gray': 'rgb(163, 163, 163)',
     }
 
     const capitalize = (word) => {
