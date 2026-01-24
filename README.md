@@ -2,8 +2,8 @@
 
 [teambuildr](https://teambuildr.vercel.app) is a team randomizer with fun animations! The current version works best on large screens.
 
-![Home](https://github.com/francizesperanza/teambuildr/readme_imgs/teambuildr_home.png?raw=true)
-![Home](https://github.com/francizesperanza/teambuildr/readme_imgs/teambuildr_sample.png?raw=true)
+![Home](https://github.com/francizesperanza/teambuildr/blob/main/readme_imgs/teambuildr_home.png?raw=true)
+![Randomizing Sample](https://github.com/francizesperanza/teambuildr/blob/main/readme_imgs/teambuildr_sample.png?raw=true)
 
 Features:
 - up to 10 teams
