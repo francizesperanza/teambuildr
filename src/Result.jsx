@@ -7,6 +7,7 @@ import { ClipboardDocumentIcon, ClipboardDocumentListIcon } from '@heroicons/rea
 import { BackwardIcon } from '@heroicons/react/24/solid';
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { ToastContainer, toast } from 'react-toastify';
+import Footer from './Footer';
 
 
 function Result() {
@@ -172,6 +173,7 @@ function Result() {
                     <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Copy to Clipboard</button>                
             </div>
         </div>
+        <Footer />
         </>
     )
 }

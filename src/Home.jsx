@@ -5,6 +5,7 @@ import './Home.css'
 import { toast, ToastContainer } from 'react-toastify';
 import { Cog6ToothIcon } from '@heroicons/react/20/solid';
 import SettingsModal from './SettingsModal.jsx';
+import Footer from './Footer.jsx';
 
 function Home() {
   const [members, setMembers] = useState([]);
@@ -117,6 +118,7 @@ function Home() {
       </div>
       <div className='home-anim flex-2'></div>
     </div>
+    <Footer />
     </>
   )
 }
