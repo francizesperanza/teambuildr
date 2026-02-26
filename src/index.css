@@ -8,12 +8,9 @@ body,
 #root {
   height: 100%;
   width: 100%;
-  font-family: "Sour Gummy", sans-serif;
-  font-optical-sizing: auto;
+  font-family: "McLaren", sans-serif;
   font-weight: 500;
   font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
 }
 
 .title{

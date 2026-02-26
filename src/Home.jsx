@@ -82,11 +82,11 @@ function Home() {
           <h1 className='title text-8xl'>teambuildr</h1>
           <div>Divide a party into teams!</div>
         </div>
-        <div className='flex items-center justify-center flex-col gap-1 overflow-y-auto'>
+        <div className='flex items-center justify-center flex-col gap-1 overflow-y-auto w-full'>
           <h2 className='text-lg font-bold'>Party Members</h2>
           <label htmlFor="member_field">Enter the name of a party member!</label>
-          <div className="flex items-center gap-2 p-2">
-            <input className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="member_field" type="text" placeholder="e.g. Santa Claus" required
+          <div className="w-[70%] flex items-center gap-2 p-2">
+            <input className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="member_field" type="text" placeholder="e.g. Santa Claus" required
             onKeyDown={(e) => {
               if (e.key === "Enter") addMember(document.getElementById("member_field").value);
             }}/>
