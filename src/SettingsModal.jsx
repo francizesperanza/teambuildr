@@ -2,6 +2,7 @@ import {useEffect, useState} from 'react'
 import Modal from './Modal';
 import { CheckCircleIcon } from '@heroicons/react/20/solid';
 import Slider from '@mui/material/Slider';
+import { Switch } from '@mui/material';
 
 function SettingsModal({isOpen, onClose, updateSettings}) {
     const [settings, setSettings] = useState();
@@ -15,11 +16,13 @@ function SettingsModal({isOpen, onClose, updateSettings}) {
 
     const saveSettings = () => {    
         const numTeams = parseInt(document.querySelector('input[type="number"]').value);
+        const leadersEnabled = document.querySelector('input[type="checkbox"]').checked;
         const settings = {
-            numTeams: numTeams
+            numTeams: numTeams,
+            leadersEnabled: leadersEnabled
         };
         localStorage.setItem('settings', JSON.stringify(settings));
-        updateSettings(numTeams);
+        updateSettings(settings);
         onClose();
     }
     return (
@@ -31,7 +34,7 @@ function SettingsModal({isOpen, onClose, updateSettings}) {
                         
                         <div className='text-left w-full flex-1'>Number of Teams</div>
                         <div className='flex items-center justify-around w-full'>
-                            <Slider aria-label="Small steps"
+                            <Slider aria-label="team size slider"
                             value={settings?.numTeams || 2}
                             onChange={(e, newValue) => setSettings({...settings, numTeams: newValue})}
                             step={1}
@@ -41,11 +44,24 @@ function SettingsModal({isOpen, onClose, updateSettings}) {
                             valueLabelDisplay="auto"
                             sx={{
                                 maxWidth: '70%',
-                                color: 'success.light'
+                                color: 'rgb(132, 204, 22)'
                             }}></Slider>
                             <input type="number" min={2} max={10} value={settings?.numTeams || 2}
                                 onChange={(e) => setSettings({...settings, numTeams: parseInt(e.target.value)})}
                                 className="w-16 text-center border border-gray-300 rounded-lg px-2 py-1" disabled/>
+                        </div>
+
+                        <div className='flex items-center justify-around w-full'>
+                            <div className='text-left w-full flex-1'>Team Leaders</div>
+                            <Switch checked={settings?.leadersEnabled || false} onChange={(e) => setSettings({...settings, leadersEnabled: e.target.checked})}
+                                sx={{
+                                    '& .MuiSwitch-switchBase.Mui-checked': {
+                                    color: 'rgb(132, 204, 22)',
+                                    },
+                                    '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                    backgroundColor: 'rgb(132, 204, 22)',
+                                    },
+                            }}/>
                         </div>
                     </div>
                 </div>

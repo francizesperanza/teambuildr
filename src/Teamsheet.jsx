@@ -10,7 +10,6 @@ function Teamsheet({members, teamColor, teamName, leader, animating, setAnimatin
   const root = useRef(null);
 
   const [sprites, setSprites] = useState([]);
-  leader = 0;
 
   const minX = -window.innerWidth / 2 + 100;
   const minY = -window.innerHeight / 2 + 100;

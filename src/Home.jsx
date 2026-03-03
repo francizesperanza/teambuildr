@@ -10,6 +10,7 @@ import Footer from './Footer.jsx';
 function Home() {
   const [members, setMembers] = useState([]);
   const [numTeams, setNumTeams] = useState(2);
+  const [leadersEnabled, setLeadersEnabled] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ function Home() {
     if (currentSettings) {
       const settings = JSON.parse(currentSettings);
       setNumTeams(settings.numTeams);
+      setLeadersEnabled(settings.leadersEnabled);
     }
     if (stored) {
       setMembers(JSON.parse(stored));
@@ -70,7 +72,7 @@ function Home() {
     }
 
     localStorage.setItem('members', JSON.stringify(members));
-    navigate('/result', { state: {members: members, numTeams: numTeams}});
+    navigate('/result', { state: {members: members, numTeams: numTeams, leadersEnabled: leadersEnabled} });
   }
 
   return (
@@ -110,7 +112,10 @@ function Home() {
           </div>
           <button onClick={() => setIsSettingsOpen(true)} type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
             <Cog6ToothIcon className="h-5 w-5 inline" /></button>
-          <SettingsModal isOpen={isSettingsOpen} updateSettings={(newNum) => setNumTeams(newNum)} onClose={() => setIsSettingsOpen(false)} />
+          <SettingsModal isOpen={isSettingsOpen} updateSettings={(settings) => {
+            setNumTeams(settings.numTeams);
+            setLeadersEnabled(settings.leadersEnabled);
+          }} onClose={() => setIsSettingsOpen(false)} />
         </div>
         <div>
             <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>

@@ -14,13 +14,14 @@ function Result() {
     const {state} = useLocation();
     const members = state?.members;
     const teamNumber = state?.numTeams;
+    const leadersEnabled = state?.leadersEnabled;
     const [teams, setTeams] = useState([]);
     const [animating, setAnimating] = useState(true);
-
     const [teamNames, setTeamNames] = useState([]);
     const [teamColors, setTeamColors] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [leaderIndexes, setLeaderIndexes] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const teamColorMap = {
         'Red': 'rgb(226, 59, 59)',
@@ -62,6 +63,17 @@ function Result() {
         return arr;
     };
 
+    const randomizeLeaders = (arr) => {
+        let leaderIndexes = [];
+        let array = arr.slice();
+        for (let i = 0; i < teamNumber; i++) {
+            const randomIndex = Math.floor(Math.random() * array[i].length);
+            leaderIndexes.push(randomIndex);
+        }
+        console.log(leaderIndexes);
+        return leaderIndexes;
+    };
+
     const randomizeTeamColors = () => {
         const colors = Object.entries(teamColorMap);
         let selectedColors = [];
@@ -75,6 +87,7 @@ function Result() {
         console.log(selectedColors);
         return selectedColors;
     };
+
 
     const randomize = (arr) => {
         let array = arr.slice();
@@ -118,13 +131,19 @@ function Result() {
         });
     }
 
+    // on page load, randomize teams and store in local storage
     useEffect(() => {
         const randomizedTeams = randomize(members);
         setTeams(randomizedTeams);
+        if(leadersEnabled) {
+            const leaders = randomizeLeaders(randomizedTeams);
+            setLeaderIndexes(leaders);
+            localStorage.setItem('leaderIndexes', JSON.stringify(leaders));
+        }
         localStorage.setItem('teams', JSON.stringify(randomizedTeams));
     },[members]);
 
-    // fetch random animal words from word API
+    // fetch random animal words from word API then randomize team colors
     useEffect(() => {
         fetch('https://random-words-api.kushcreates.com/api?language=en&category=animals&type=capitalized&words='+teamNumber)
         .then(response => {
@@ -158,7 +177,7 @@ function Result() {
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} leader={leaderIndexes?.[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
