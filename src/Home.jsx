@@ -79,9 +79,9 @@ function Home() {
     <>
     <ToastContainer />
     <div className='flex min-h-dvh w-full overflow-y-auto'>
-      <div className='builder-panel flex flex-2 items-center justify-center flex-col p-[10vh] min-h-dvh gap-[10vh] overflow-y-auto'>
-        <div className='flex items-center justify-center flex-col gap-2 overflow-visible'>
-          <h1 className='title text-8xl'>teambuildr</h1>
+      <div className='builder-panel flex flex-2 items-center justify-center flex-col p-[10vh] min-h-dvh gap-[3vh] overflow-y-auto'>
+        <div className='flex items-center justify-center flex-col gap-1 overflow-visible'>
+          <h1 className='title text-7xl'>teambuildr</h1>
           <div>Divide a party into teams!</div>
         </div>
         <div className='flex items-center justify-center flex-col gap-1 overflow-y-auto w-full'>
@@ -106,9 +106,12 @@ function Home() {
           </div>
         </div>
         <div className='flex items-center justify-around gap-5 w-[30vw]'>
-          <div className='flex justify-center items-center gap-3 border border-gray-300 rounded-lg px-4 py-2 flex-1 text-center'>
-            <div className='font-bold text-2xl'>{numTeams}</div>
-            Teams
+          <div className='flex justify-around items-center gap-3 border border-gray-300 rounded-lg px-4 py-2 flex-1 text-center'>
+            <div>
+              <div className='font-bold text-2xl'>{numTeams}</div>
+              Teams
+            </div>
+            <div className='text-xs'>Team Leaders <br></br> {leadersEnabled ? 'Enabled' : 'Disabled'}</div>
           </div>
           <button onClick={() => setIsSettingsOpen(true)} type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
             <Cog6ToothIcon className="h-5 w-5 inline" /></button>
