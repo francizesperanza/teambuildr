@@ -1,15 +1,17 @@
 import { useState, useRef, useEffect, useLayoutEffect } from 'react'
-import Member from './Member.jsx'
-import { Link } from 'react-router-dom'
 import { animate, stagger, createScope, set, random } from 'animejs'
 import './Teamsheet.css'
-import { StarIcon } from '@heroicons/react/16/solid'
+import { Popover } from '@mui/material';
 
-function Teamsheet({members, teamColor, teamName, leader, animating, setAnimating}) {
+function Teamsheet({members, teamColor, teamIndex, teamName, leader, leaderEnabled, animating, setAnimating}) {
   const scope = useRef(null);
   const root = useRef(null);
 
   const [sprites, setSprites] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedMember, setSelectedMember] = useState(null);
+  const [currentLeader, setCurrentLeader] = useState(leader);
+
 
   const minX = -window.innerWidth / 2 + 100;
   const minY = -window.innerHeight / 2 + 100;
@@ -76,8 +78,30 @@ function Teamsheet({members, teamColor, teamName, leader, animating, setAnimatin
     });
   }
 
+  const openPopover = (e, index) => {
+    setAnchorEl(e.currentTarget);
+    setSelectedMember(index);
+  }
+
+  const closePopover = () => {
+    setAnchorEl(null);
+    setSelectedMember(null);
+  }
+
+  const changeLeader = (index) => {
+    currentLeader === index ? setCurrentLeader(null) : setCurrentLeader(index);
+    let leaderIndexes = JSON.parse(localStorage.getItem('leaderIndexes'));
+    leaderIndexes[teamIndex] = index;
+    localStorage.setItem('leaderIndexes', JSON.stringify(leaderIndexes));
+    closePopover();
+  }
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   //animation
     useEffect(() => {
+        console.log(currentLeader);
         setSprites(randomizeSprites());
         scope.current = createScope({root}).add( self => {
             setAnimating(true);
@@ -162,19 +186,41 @@ function Teamsheet({members, teamColor, teamName, leader, animating, setAnimatin
           style={{backgroundColor: animating ? 'transparent': teamColor?.[1]}}>
               {members.map((member, index) => (
                   <div onMouseLeave={onSpriteLeave} onMouseEnter={onSpriteHover} className='flex flex-col member-container flex-[30%] items-center justify-center gap-2' key={member.id}>
-                    <span className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar min-w-[4vw] h-[4.5vw] object-contain'/></span>
+                    <span onClick={(e) => openPopover(e, index)} className='sprite-shadow'><img src={sprites[index]} alt="avatar" className='member-avatar min-w-[4vw] h-[4.5vw] object-contain'/></span>
                     <div className='flex stroke-1 gap-1 items-center justify-center'>
-                      {leader === index && 
+                      {currentLeader === index && 
                       <svg className={'leader-icon basis-sm h-10 w-10 fill-yellow-500 stroke-black stroke-1'+ (animating ? ' opacity-0' : ' opacity-100')} viewBox="0 0 24 24">
                         <path d="m19.687 14.093.184-1.705c.097-.91.162-1.51.111-1.888H20a1.5 1.5 0 1 0-1.136-.52c-.326.201-.752.626-1.393 1.265-.495.493-.742.739-1.018.777a.83.83 0 0 1-.45-.063c-.254-.112-.424-.416-.763-1.025l-1.79-3.209c-.209-.375-.384-.69-.542-.942a2 2 0 1 0-1.816 0c-.158.253-.333.567-.543.942L8.76 10.934c-.34.609-.51.913-.764 1.025a.83.83 0 0 1-.45.063c-.275-.038-.522-.284-1.017-.777-.641-.639-1.067-1.064-1.393-1.265A1.5 1.5 0 1 0 4 10.5h.018c-.051.378.014.979.111 1.888l.184 1.705c.102.946.186 1.847.29 2.657h14.794c.104-.81.188-1.71.29-2.657M10.912 21h2.176c2.836 0 4.254 0 5.2-.847.413-.37.674-1.036.863-1.903H4.849c.189.867.45 1.534.863 1.903.946.847 2.364.847 5.2.847"/>
                       </svg>}
                       <div className='member-name bg-white rounded-full px-2 border-1' key={member.id}>{member.name}</div>
-                      {leader === index && <div className={'flex-grow basis-sm' + (animating ? ' opacity-0' : ' opacity-100')}></div>}
+                      {currentLeader === index && <div className={'flex-grow basis-sm' + (animating ? ' opacity-0' : ' opacity-100')}></div>}
                     </div>
                   </div>
               ))}
           </div>
       </div>
+      {leaderEnabled && <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={closePopover}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'left',
+        }}
+      >
+        <div className={'flex p-4 gap-2 items-center' + (animating ? ' opacity-0' : ' opacity-100') + (currentLeader === selectedMember ? ' bg-gray-300 cursor-not-allowed' : ' hover:bg-gray-100 cursor-pointer')} onClick={() => {
+          changeLeader(selectedMember), closePopover()}}>
+          <svg viewBox="0 0 24 24" className={'w-[1em] h-[1em] leader-icon items-center stroke-black stroke-1' + (animating ? ' opacity-0' : ' opacity-100') + (currentLeader === selectedMember ? ' fill-gray-500' : ' fill-yellow-500')}>
+            <path d="m19.687 14.093.184-1.705c.097-.91.162-1.51.111-1.888H20a1.5 1.5 0 1 0-1.136-.52c-.326.201-.752.626-1.393 1.265-.495.493-.742.739-1.018.777a.83.83 0 0 1-.45-.063c-.254-.112-.424-.416-.763-1.025l-1.79-3.209c-.209-.375-.384-.69-.542-.942a2 2 0 1 0-1.816 0c-.158.253-.333.567-.543.942L8.76 10.934c-.34.609-.51.913-.764 1.025a.83.83 0 0 1-.45.063c-.275-.038-.522-.284-1.017-.777-.641-.639-1.067-1.064-1.393-1.265A1.5 1.5 0 1 0 4 10.5h.018c-.051.378.014.979.111 1.888l.184 1.705c.102.946.186 1.847.29 2.657h14.794c.104-.81.188-1.71.29-2.657M10.912 21h2.176c2.836 0 4.254 0 5.2-.847.413-.37.674-1.036.863-1.903H4.849c.189.867.45 1.534.863 1.903.946.847 2.364.847 5.2.847"/>
+          </svg>
+          <div>Assign as Leader</div>
+        </div>
+      </Popover>}
     </>
   )
 }

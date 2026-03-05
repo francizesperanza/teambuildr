@@ -109,11 +109,16 @@ function Result() {
         let names = JSON.parse(localStorage.getItem('teamNames'));
         let colors = JSON.parse(localStorage.getItem('teamColors'));
         let teams = JSON.parse(localStorage.getItem('teams'));
+        let leaderIndexes = JSON.parse(localStorage.getItem('leaderIndexes'));
 
         names.forEach((name, index) => {
             clipboardText += `${colors[index][0]} ${name}:\n`;
             teams[index].forEach(member => {
-                clipboardText += `- ${member.name}\n`;
+                if(leaderIndexes?.[index] === teams[index].indexOf(member)) {
+                    clipboardText += `- ${member.name} (Leader)\n`;
+                } else {
+                    clipboardText += `- ${member.name}\n`;
+                }
             });
             clipboardText += `\n`;
         });
@@ -177,18 +182,18 @@ function Result() {
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} leader={leaderIndexes?.[index]} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamIndex={index} teamName={teamNames[index]} leaderEnabled={leadersEnabled} leader={leaderIndexes[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
             <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white`} id="back-btn">
+                    <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white cursor-pointer`} id="back-btn">
                         <ArrowLeftIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Go Back</button>
                 </Link>
 
-                <button type="button" onClick={copyToClipboard} className={`bg-lime-500 px-6 py-3 rounded-lg text-white`} id="rebuild-btn">
+                <button type="button" onClick={copyToClipboard} className={`bg-lime-500 px-6 py-3 rounded-lg text-white cursor-pointer`} id="rebuild-btn">
                     <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Copy to Clipboard</button>                
             </div>
         </div>

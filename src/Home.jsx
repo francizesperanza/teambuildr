@@ -92,7 +92,7 @@ function Home() {
             onKeyDown={(e) => {
               if (e.key === "Enter") addMember(document.getElementById("member_field").value);
             }}/>
-            <button type="button" className="bg-green-500 px-4 py-2 rounded text-white hover:bg-green-600" 
+            <button type="button" className="bg-green-500 px-4 py-2 rounded text-white hover:bg-green-600 cursor-pointer" 
             onClick={() => addMember(document.getElementById("member_field").value)} id="add-btn">Add</button>
           </div>
         </div>
@@ -113,7 +113,7 @@ function Home() {
             </div>
             <div className='text-xs'>Team Leaders <br></br> {leadersEnabled ? 'Enabled' : 'Disabled'}</div>
           </div>
-          <button onClick={() => setIsSettingsOpen(true)} type="button" className="flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
+          <button onClick={() => setIsSettingsOpen(true)} type="button" className="cursor-pointer flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
             <Cog6ToothIcon className="h-5 w-5 inline" /></button>
           <SettingsModal isOpen={isSettingsOpen} updateSettings={(settings) => {
             setNumTeams(settings.numTeams);
@@ -121,7 +121,7 @@ function Home() {
           }} onClose={() => setIsSettingsOpen(false)} />
         </div>
         <div>
-            <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white" id="generate-btn">Build Teams</button>
+            <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white cursor-pointer" id="generate-btn">Build Teams</button>
         </div>
       </div>
       <div className='home-anim flex-2'></div>

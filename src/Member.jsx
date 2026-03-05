@@ -25,9 +25,9 @@ function Member({name, onEdit, onRemove}) {
                 <div className='flex justify-center gap-[1vw] shrink'>
                     <button type="button"
                     onClick={editing ? saveEdit : () => setEditing(true)}
-                    className="bg-gray-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-gray-600">{editing ? "Save" : "Edit"}</button>
+                    className="cursor-pointer bg-gray-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-gray-600">{editing ? "Save" : "Edit"}</button>
 
-                    <button type="button" onClick={() => onRemove()} className="bg-red-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-red-600">Remove</button>
+                    <button type="button" onClick={() => onRemove()} className="cursor-pointer bg-red-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-red-600">Remove</button>
                 </div>
             </div>
         </>
