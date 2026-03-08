@@ -1,4 +1,4 @@
-import { use, useEffect, useState} from 'react'
+import { use, useEffect, useState, useRef} from 'react'
 import { useLocation } from 'react-router-dom'
 import Teamsheet from './Teamsheet'
 import { Link } from 'react-router-dom'
@@ -11,6 +11,7 @@ import Footer from './Footer';
 
 
 function Result() {
+    const inputRef = useRef(null);
     const {state} = useLocation();
     const members = state?.members;
     const teamNumber = state?.numTeams;
@@ -112,7 +113,7 @@ function Result() {
         let leaderIndexes = JSON.parse(localStorage.getItem('leaderIndexes'));
 
         names.forEach((name, index) => {
-            clipboardText += `${colors[index][0]} ${name}:\n`;
+            clipboardText += `${name}:\n`;
             teams[index].forEach(member => {
                 if(leaderIndexes?.[index] === teams[index].indexOf(member)) {
                     clipboardText += `- ${member.name} (Leader)\n`;
@@ -134,6 +135,25 @@ function Result() {
             progress: undefined,
             theme: "light",
         });
+    }
+
+    const createTeamNames = (names, colors) => {
+        // more default name themes soon
+        const teamNames = Array.from({ length: teamNumber }, () => []);
+        if (true) {
+            for (let i = 0; i < teamNames.length; i++) {
+                const color = colors?.[i]?.[0] ?? "";
+                const name = names?.[i] ?? "";
+                teamNames[i] = `${color} ${name}`;
+            }
+        }
+        return teamNames;
+    }
+
+    const editTeamName = (index, newName) => {
+        let newNames = teamNames.map((name, i) => i === index ? newName : name);
+        setTeamNames(newNames);
+        localStorage.setItem('teamNames', JSON.stringify(newNames));
     }
 
     // on page load, randomize teams and store in local storage
@@ -158,14 +178,16 @@ function Result() {
             return response.json();
         })
         .then(data => {
+
+            // for animal theme
             const pluralized = pluralize(data);
             const colors = randomizeTeamColors();
-
-            setTeamNames(pluralized);
+            
             setTeamColors(colors);
-
-            localStorage.setItem('teamNames', JSON.stringify(pluralized));
+            setTeamNames(createTeamNames(pluralized, colors));
+            
             localStorage.setItem('teamColors', JSON.stringify(colors));
+            localStorage.setItem('teamNames', JSON.stringify(pluralized));
             setLoading(false);
         })
         .catch(error => {
@@ -182,7 +204,7 @@ function Result() {
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamIndex={index} teamName={teamNames[index]} leaderEnabled={leadersEnabled} leader={leaderIndexes[index]} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamColor={teamColors?.[index]} onEdit={(newName) => editTeamName(index, newName)} teamIndex={index} teamName={teamNames?.[index]} leaderEnabled={leadersEnabled} leader={leaderIndexes[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
