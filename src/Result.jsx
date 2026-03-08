@@ -1,4 +1,4 @@
-import { use, useEffect, useState, useRef} from 'react'
+import { use, useEffect, useState} from 'react'
 import { useLocation } from 'react-router-dom'
 import Teamsheet from './Teamsheet'
 import { Link } from 'react-router-dom'
@@ -11,7 +11,6 @@ import Footer from './Footer';
 
 
 function Result() {
-    const inputRef = useRef(null);
     const {state} = useLocation();
     const members = state?.members;
     const teamNumber = state?.numTeams;
@@ -211,12 +210,24 @@ function Result() {
             <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white cursor-pointer`} id="back-btn">
-                        <ArrowLeftIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Go Back</button>
+                    <button type="button" className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="back-btn">
+                        <svg className='overflow-visible stroke-black stroke-2 fill-gray-500 absolute inset-0 w-full h-full hover:fill-gray-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
+                            <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                        </svg>
+                        <span className='pointer-events-none z-20'>
+                            <ArrowLeftIcon className=" h-6 w-6 inline-block mr-2 -mt-1"/>
+                            <span>Go Back</span>
+                        </span>
+                    </button>
                 </Link>
 
-                <button type="button" onClick={copyToClipboard} className={`bg-lime-500 px-6 py-3 rounded-lg text-white cursor-pointer`} id="rebuild-btn">
-                    <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Copy to Clipboard</button>                
+                <button type="button" onClick={copyToClipboard} className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="copy-to-clipboard-btn">
+                    <svg className='overflow-visible stroke-black stroke-2 fill-lime-500 absolute inset-0 w-full h-full hover:fill-lime-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
+                        <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                    </svg>
+                    <span className='pointer-events-none z-20'>
+                        <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />
+                        <span>Copy to Clipboard</span>
+                    </span>
+                </button>                
             </div>
         </div>
         <Footer />

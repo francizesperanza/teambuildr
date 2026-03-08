@@ -65,8 +65,15 @@ function SettingsModal({isOpen, onClose, updateSettings}) {
                         </div>
                     </div>
                 </div>
-                <button onClick={saveSettings} className="float-right flex items-center justify-center bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600">
-                    <CheckCircleIcon className="h-5 w-5 mr-2 inline" /> Save
+                <button type="button" className={`float-right relative px-5 py-3 inline-flex items-center bg-transparent text-white cursor-pointer`} id="remove-btn"
+                onClick={saveSettings}>
+                    <svg className='overflow-visible stroke-black stroke-2 fill-lime-500 absolute inset-0 w-full h-full hover:fill-lime-700 hover:drop-shadow-sm' viewBox="0 0 163 154" preserveAspectRatio="none">
+                        <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+                    </svg>
+                    <span className='pointer-events-none z-20 flex justify-center items-center'>
+                        <CheckCircleIcon className="h-5 w-5 mr-2 inline" />
+                        <div>Save</div>
+                    </span>
                 </button>
             </Modal>
         </>

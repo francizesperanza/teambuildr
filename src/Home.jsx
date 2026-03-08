@@ -3,7 +3,7 @@ import Member from './Member.jsx'
 import { Link, useNavigate} from 'react-router-dom'
 import './Home.css'
 import { toast, ToastContainer } from 'react-toastify';
-import { Cog6ToothIcon } from '@heroicons/react/20/solid';
+import { Cog6ToothIcon, PlusIcon } from '@heroicons/react/20/solid';
 import SettingsModal from './SettingsModal.jsx';
 import Footer from './Footer.jsx';
 
@@ -35,11 +35,15 @@ function Home() {
   }
 
   const editMember = (id, newName) => {
-    setMembers(members.map(member => member.id === id ? { ...member, name: newName } : member))
+    let newMembers = members.map(member => member.id === id ? { ...member, name: newName } : member)
+    setMembers(newMembers)
+    localStorage.setItem('members', JSON.stringify(newMembers))
   }
   
   const removeMember = (id) => {
-    setMembers(members.filter(member => member.id !== id))
+    let newMembers = members.filter(member => member.id !== id)
+    setMembers(newMembers)
+    localStorage.setItem('members', JSON.stringify(newMembers))
   }
 
   const buildTeams = () => {
@@ -92,8 +96,15 @@ function Home() {
             onKeyDown={(e) => {
               if (e.key === "Enter") addMember(document.getElementById("member_field").value);
             }}/>
-            <button type="button" className="bg-green-500 px-4 py-2 rounded text-white hover:bg-green-600 cursor-pointer" 
-            onClick={() => addMember(document.getElementById("member_field").value)} id="add-btn">Add</button>
+            <button type="button" className={`relative px-2 py-5 inline-flex items-center bg-transparent text-white cursor-pointer`} id="add-btn"
+            onClick={() => addMember(document.getElementById("member_field").value)}>
+                <svg className='overflow-visible stroke-black stroke-2 fill-lime-500 absolute inset-0 w-full h-full hover:fill-lime-700 hover:drop-shadow-sm' viewBox="0 0 163 154">
+                    <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+                </svg>
+                <span className='pointer-events-none z-20 flex justify-center items-center'>
+                    <PlusIcon className=" h-8 w-8"/>
+                </span>
+            </button>
           </div>
         </div>
         <div className='flex flex-col items-center gap-4'>
@@ -113,15 +124,31 @@ function Home() {
             </div>
             <div className='text-xs'>Team Leaders <br></br> {leadersEnabled ? 'Enabled' : 'Disabled'}</div>
           </div>
-          <button onClick={() => setIsSettingsOpen(true)} type="button" className="cursor-pointer flex justify-center items-center bg-gray-500 px-4 py-3 rounded-lg text-white" id="team-count-btn">
-            <Cog6ToothIcon className="h-5 w-5 inline" /></button>
+          <button type="button" className={`relative px-4 py-4 inline-flex items-center bg-transparent text-white cursor-pointer`} id="remove-btn"
+          onClick={() => setIsSettingsOpen(true)}>
+              <svg className='overflow-visible stroke-black stroke-2 fill-gray-500 absolute inset-0 w-full h-full hover:fill-gray-700 hover:drop-shadow-sm' viewBox="0 0 163 154" preserveAspectRatio="none">
+                  <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+              </svg>
+              <span className='pointer-events-none z-20 flex justify-center items-center'>
+                  <Cog6ToothIcon className="h-5 w-5 inline" />
+              </span>
+          </button>
+            
           <SettingsModal isOpen={isSettingsOpen} updateSettings={(settings) => {
             setNumTeams(settings.numTeams);
             setLeadersEnabled(settings.leadersEnabled);
           }} onClose={() => setIsSettingsOpen(false)} />
         </div>
         <div>
-            <button onClick={buildTeams} type="button" className="bg-blue-500 px-6 py-3 rounded-lg text-white cursor-pointer" id="generate-btn">Build Teams</button>
+          <button type="button" className={`relative px-5 py-5 inline-flex items-center bg-transparent text-white cursor-pointer`} id="remove-btn"
+          onClick={buildTeams}>
+              <svg className='overflow-visible stroke-black stroke-2 fill-blue-500 absolute inset-0 w-full h-full hover:fill-blue-700 hover:drop-shadow-sm' viewBox="0 0 163 154" preserveAspectRatio="none">
+                  <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+              </svg>
+              <span className='pointer-events-none z-20 flex justify-center items-center'>
+                  <div>Build Teams</div>
+              </span>
+          </button>
         </div>
       </div>
       <div className='home-anim flex-2'></div>
