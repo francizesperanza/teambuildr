@@ -21,3 +21,8 @@ Coming Soon:
 - export as PNG
 - more design changes
 - responsive design
+
+Attributions:
+
+Crown SVG Vector by Solar Icons from ![SVG Repo](https://www.svgrepo.com/svg/525297/crown) is licensed under CC Attribution License
+Gentlecons Interface Icons by Konstantin Filatov from ![SVG Repo](https://www.svgrepo.com/collection/gentlecons-interface-icons/) is licensed under CC Attribution License
