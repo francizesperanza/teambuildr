@@ -70,7 +70,6 @@ function Result() {
             const randomIndex = Math.floor(Math.random() * array[i].length);
             leaderIndexes.push(randomIndex);
         }
-        console.log(leaderIndexes);
         return leaderIndexes;
     };
 
@@ -84,7 +83,6 @@ function Result() {
                 selectedColors.push(color);
             }
         }
-        console.log(selectedColors);
         return selectedColors;
     };
 
