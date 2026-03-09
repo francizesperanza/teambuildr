@@ -7,19 +7,21 @@ import { ClipboardDocumentIcon, ClipboardDocumentListIcon } from '@heroicons/rea
 import { BackwardIcon } from '@heroicons/react/24/solid';
 import { ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { ToastContainer, toast } from 'react-toastify';
+import Footer from './Footer';
 
 
 function Result() {
     const {state} = useLocation();
     const members = state?.members;
     const teamNumber = state?.numTeams;
+    const leadersEnabled = state?.leadersEnabled;
     const [teams, setTeams] = useState([]);
     const [animating, setAnimating] = useState(true);
-
     const [teamNames, setTeamNames] = useState([]);
     const [teamColors, setTeamColors] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [leaderIndexes, setLeaderIndexes] = useState([]);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const teamColorMap = {
         'Red': 'rgb(226, 59, 59)',
@@ -61,6 +63,17 @@ function Result() {
         return arr;
     };
 
+    const randomizeLeaders = (arr) => {
+        let leaderIndexes = [];
+        let array = arr.slice();
+        for (let i = 0; i < teamNumber; i++) {
+            const randomIndex = Math.floor(Math.random() * array[i].length);
+            leaderIndexes.push(randomIndex);
+        }
+        console.log(leaderIndexes);
+        return leaderIndexes;
+    };
+
     const randomizeTeamColors = () => {
         const colors = Object.entries(teamColorMap);
         let selectedColors = [];
@@ -74,6 +87,7 @@ function Result() {
         console.log(selectedColors);
         return selectedColors;
     };
+
 
     const randomize = (arr) => {
         let array = arr.slice();
@@ -95,11 +109,16 @@ function Result() {
         let names = JSON.parse(localStorage.getItem('teamNames'));
         let colors = JSON.parse(localStorage.getItem('teamColors'));
         let teams = JSON.parse(localStorage.getItem('teams'));
+        let leaderIndexes = JSON.parse(localStorage.getItem('leaderIndexes'));
 
         names.forEach((name, index) => {
-            clipboardText += `${colors[index][0]} ${name}:\n`;
+            clipboardText += `${name}:\n`;
             teams[index].forEach(member => {
-                clipboardText += `- ${member.name}\n`;
+                if(leaderIndexes?.[index] === teams[index].indexOf(member)) {
+                    clipboardText += `- ${member.name} (Leader)\n`;
+                } else {
+                    clipboardText += `- ${member.name}\n`;
+                }
             });
             clipboardText += `\n`;
         });
@@ -117,13 +136,38 @@ function Result() {
         });
     }
 
+    const createTeamNames = (names, colors) => {
+        // more default name themes soon
+        const teamNames = Array.from({ length: teamNumber }, () => []);
+        if (true) {
+            for (let i = 0; i < teamNames.length; i++) {
+                const color = colors?.[i]?.[0] ?? "";
+                const name = names?.[i] ?? "";
+                teamNames[i] = `${color} ${name}`;
+            }
+        }
+        return teamNames;
+    }
+
+    const editTeamName = (index, newName) => {
+        let newNames = teamNames.map((name, i) => i === index ? newName : name);
+        setTeamNames(newNames);
+        localStorage.setItem('teamNames', JSON.stringify(newNames));
+    }
+
+    // on page load, randomize teams and store in local storage
     useEffect(() => {
         const randomizedTeams = randomize(members);
         setTeams(randomizedTeams);
+        if(leadersEnabled) {
+            const leaders = randomizeLeaders(randomizedTeams);
+            setLeaderIndexes(leaders);
+            localStorage.setItem('leaderIndexes', JSON.stringify(leaders));
+        }
         localStorage.setItem('teams', JSON.stringify(randomizedTeams));
     },[members]);
 
-    // fetch random animal words from word API
+    // fetch random animal words from word API then randomize team colors
     useEffect(() => {
         fetch('https://random-words-api.kushcreates.com/api?language=en&category=animals&type=capitalized&words='+teamNumber)
         .then(response => {
@@ -133,14 +177,16 @@ function Result() {
             return response.json();
         })
         .then(data => {
+
+            // for animal theme
             const pluralized = pluralize(data);
             const colors = randomizeTeamColors();
-
-            setTeamNames(pluralized);
+            
             setTeamColors(colors);
-
-            localStorage.setItem('teamNames', JSON.stringify(pluralized));
+            setTeamNames(createTeamNames(pluralized, colors));
+            
             localStorage.setItem('teamColors', JSON.stringify(colors));
+            localStorage.setItem('teamNames', JSON.stringify(pluralized));
             setLoading(false);
         })
         .catch(error => {
@@ -157,21 +203,34 @@ function Result() {
             <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
-                        <Teamsheet key={index} teamColor={teamColors?.[index]} teamName={teamNames[index]} members={team} animating={animating} setAnimating={setAnimating} />
+                        <Teamsheet key={index} teamColor={teamColors?.[index]} onEdit={(newName) => editTeamName(index, newName)} teamIndex={index} teamName={teamNames?.[index]} leaderEnabled={leadersEnabled} leader={leaderIndexes[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
             <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className={`bg-gray-500 px-6 py-3 rounded-lg text-white`} id="back-btn">
-                        <ArrowLeftIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Go Back</button>
+                    <button type="button" className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="back-btn">
+                        <svg className='overflow-visible stroke-black stroke-2 fill-gray-500 absolute inset-0 w-full h-full hover:fill-gray-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
+                            <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                        </svg>
+                        <span className='pointer-events-none z-20'>
+                            <ArrowLeftIcon className=" h-6 w-6 inline-block mr-2 -mt-1"/>
+                            <span>Go Back</span>
+                        </span>
+                    </button>
                 </Link>
 
-                <button type="button" onClick={copyToClipboard} className={`bg-lime-500 px-6 py-3 rounded-lg text-white`} id="rebuild-btn">
-                    <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />Copy to Clipboard</button>                
+                <button type="button" onClick={copyToClipboard} className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="copy-to-clipboard-btn">
+                    <svg className='overflow-visible stroke-black stroke-2 fill-lime-500 absolute inset-0 w-full h-full hover:fill-lime-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
+                        <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                    </svg>
+                    <span className='pointer-events-none z-20'>
+                        <ClipboardDocumentListIcon className="h-6 w-6 inline-block mr-2 -mt-1" />
+                        <span>Copy to Clipboard</span>
+                    </span>
+                </button>                
             </div>
         </div>
+        <Footer />
         </>
     )
 }

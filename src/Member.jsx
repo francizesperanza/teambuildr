@@ -12,22 +12,36 @@ function Member({name, onEdit, onRemove}) {
 
     return (
         <>
-            <div className='flex gap-[1vw] bg-gray-100 rounded-lg px-[1vw] py-[2vh] w-full place-content-between hover:bg-gray-200'>
+            <div className='flex items-center gap-[1vw] bg-gray-100 rounded-lg px-[1vw] py-[2vh] w-full place-content-between hover:bg-gray-200'>
                 <input type="text" value={editing ? newName : name} disabled={!editing}
                 onChange={(e) => setNewName(e.target.value)}
-                className={`truncate text-wrap justify-between grow flex-wrap text-justify w-full px-2 py-1 rounded ${editing ? 'bg-white' : 'bg-gray-300'}`}
+                className={`truncate text-wrap justify-between grow flex-wrap text-justify h-full w-full px-2 py-1 rounded ${editing ? 'bg-white' : 'bg-gray-300'}`}
                 onKeyDown={(e) => {
                 if (e.key === "Enter") {
                     editing ? saveEdit() : setEditing(true)
                 };
                 }}></input>
 
-                <div className='flex justify-center gap-[1vw] shrink'>
-                    <button type="button"
-                    onClick={editing ? saveEdit : () => setEditing(true)}
-                    className="bg-gray-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-gray-600">{editing ? "Save" : "Edit"}</button>
+                <div className='flex justify-center gap-[1vw] shrink h-[70%]'>
+                    <button type="button" className={`relative px-5 py-5 inline-flex items-center bg-transparent text-white cursor-pointer`} id="edit-btn"
+                    onClick={editing ? saveEdit : () => setEditing(true)}>
+                        <svg className={'overflow-visible stroke-black stroke-2 absolute inset-0 w-full h-full hover:drop-shadow-sm' + (editing ? ' fill-lime-500 hover:fill-lime-700' : ' fill-gray-500 hover:fill-gray-700')} viewBox="0 0 163 154" preserveAspectRatio="none">
+                            <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+                        </svg>
+                        <span className='pointer-events-none z-20 flex justify-center items-center'>
+                            <div>{editing ? "Save" : "Edit"}</div>
+                        </span>
+                    </button>
 
-                    <button type="button" onClick={() => onRemove()} className="bg-red-500 px-[1vw] py-[1vh] rounded-lg text-white hover:bg-red-600">Remove</button>
+                    <button type="button" className={`relative px-5 py-5 inline-flex items-center bg-transparent text-white cursor-pointer`} id="remove-btn"
+                    onClick={() => onRemove()}>
+                        <svg className='overflow-visible stroke-black stroke-2 fill-red-600 absolute inset-0 w-full h-full hover:fill-red-800 hover:drop-shadow-sm' viewBox="0 0 163 154" preserveAspectRatio="none">
+                            <path d="M158.549 15.303c-9.424-21.057-146.69-19.74-154.205 0-7.514 19.74-4.786 108.573 3.78 126.339 8.568 17.767 129.008 15.135 141.001 0 11.994-15.134 18.847-105.282 9.424-126.339"/>
+                        </svg>
+                        <span className='pointer-events-none z-20 flex justify-center items-center'>
+                            <div>Remove</div>
+                        </span>
+                    </button>
                 </div>
             </div>
         </>
