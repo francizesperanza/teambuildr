@@ -12,17 +12,17 @@ function Member({name, onEdit, onRemove}) {
 
     return (
         <>
-            <div className='flex gap-[1vw] bg-gray-100 rounded-lg px-[1vw] py-[2vh] w-full place-content-between hover:bg-gray-200'>
+            <div className='flex items-center gap-[1vw] bg-gray-100 rounded-lg px-[1vw] py-[2vh] w-full place-content-between hover:bg-gray-200'>
                 <input type="text" value={editing ? newName : name} disabled={!editing}
                 onChange={(e) => setNewName(e.target.value)}
-                className={`truncate text-wrap justify-between grow flex-wrap text-justify w-full px-2 py-1 rounded ${editing ? 'bg-white' : 'bg-gray-300'}`}
+                className={`truncate text-wrap justify-between grow flex-wrap text-justify h-full w-full px-2 py-1 rounded ${editing ? 'bg-white' : 'bg-gray-300'}`}
                 onKeyDown={(e) => {
                 if (e.key === "Enter") {
                     editing ? saveEdit() : setEditing(true)
                 };
                 }}></input>
 
-                <div className='flex justify-center gap-[1vw] shrink'>
+                <div className='flex justify-center gap-[1vw] shrink h-[70%]'>
                     <button type="button" className={`relative px-5 py-5 inline-flex items-center bg-transparent text-white cursor-pointer`} id="edit-btn"
                     onClick={editing ? saveEdit : () => setEditing(true)}>
                         <svg className={'overflow-visible stroke-black stroke-2 absolute inset-0 w-full h-full hover:drop-shadow-sm' + (editing ? ' fill-lime-500 hover:fill-lime-700' : ' fill-gray-500 hover:fill-gray-700')} viewBox="0 0 163 154" preserveAspectRatio="none">

@@ -196,7 +196,12 @@ function Teamsheet({members, teamColor, teamIndex, teamName, onEdit, leader, lea
           style={{backgroundColor: teamColor ? teamColor[1]: undefined}}>
           <input ref={inputRef} type="text" className={'font-bold text-center cursor-default w-auto rounded-lg' + (editing ? ' bg-white' : ' bg-transparent')}
           value={(editing ? newTeamName : teamName) ?? ""} disabled={!editing}
-          onChange={(e) => setNewTeamName(e.target.value)}>
+          onChange={(e) => setNewTeamName(e.target.value)}
+          onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              saveEdit();
+          }
+          }}>
           </input>
           <button type="button" className={'cursor-pointer px-[1vh] rounded-lg text-black' + (editing ? ' bg-lime-500 hover:bg-lime-600 hover:text-white' : 'bg-transparent hover:bg-gray-600 hover:text-white')}
           onClick={() => {
