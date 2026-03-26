@@ -29,7 +29,7 @@ function SettingsModal({isOpen, onClose, updateSettings}) {
         <>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <h2 className="text-2xl font-bold mb-4">Settings</h2>
-                <div className='flex flex-col w-full items-center justify-around gap-4 p-6 border border-gray-300 rounded-lg mb-4'>
+                <div className='flex flex-col text-sm md:text-base w-full items-center justify-around gap-4 p-6 border border-gray-300 rounded-lg mb-4'>
                     <div className='flex flex-col w-full items-center justify-between gap-4'>
                         
                         <div className='text-left w-full flex-1'>Number of Teams</div>

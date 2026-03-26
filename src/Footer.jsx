@@ -4,9 +4,9 @@ import { useState } from 'react'
 function Footer() {
 
     return (
-        <div className="w-full flex items-center justify-around bg-black py-8">
+        <div className="w-full flex flex-col md:flex-row items-center justify-around bg-black gap-8 py-8">
             
-            <div className='flex items-center justify-center overflow-visible gap-8'>
+            <div className='flex flex-col md:flex-row items-center justify-center overflow-visible gap-3 md:gap-8'>
                 <h1 className='title text-white text-5xl'>teambuildr</h1>
                 <div className='text-white'>teambuildr © {new Date().getFullYear()}</div>
                 <div className='flex flex-col'>
