@@ -198,19 +198,19 @@ function Result() {
     return (
         <>
         <ToastContainer />
-        <div className='result-bg flex items-center justify-center flex-col p-[5vh] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh]'>
-            <div className={`bg-white px-4 py-2 rounded-lg title text-5xl border-2 border-dashed` + (animating ? ' opacity-0' : ' opacity-100')}>Here are the teams:</div>
-            <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[85%] h-auto'>
+        <div className='result-bg flex items-center justify-center flex-col md:p-[5vh] p-[3vw] min-h-dvh gap-[10vh] overflow-hidden bg-[url(./assets/teambuildr_bg_tile.svg)] bg-repeat bg-size-[40vh]'>
+            <div className={`text-center bg-white px-4 py-2 rounded-lg title text-5xl border-2 border-dashed` + (animating ? ' opacity-0' : ' opacity-100')}>Here are the teams:</div>
+            <div id="teams-container" className='flex justify-center items-center gap-2 overflow-visible w-[90%] md:w-[85%] h-auto'>
                 <div id="team-member-section" className='overflow-visible flex flex-wrap flex-row gap-4 items-center justify-center'>
                     {teams.length > 0 && teams.map((team, index) => (
                         <Teamsheet key={index} teamColor={teamColors?.[index]} onEdit={(newName) => editTeamName(index, newName)} teamIndex={index} teamName={teamNames?.[index]} leaderEnabled={leadersEnabled} leader={leaderIndexes[index]} members={team} animating={animating} setAnimating={setAnimating} />
                     ))}
                 </div>
             </div>
-            <div className={'flex flex-row justify-center items-center gap-5 bg-white px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
+            <div className={'flex flex-row text-sm md:text-base justify-center items-center gap-5 bg-white px-3 w-full md:px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
-                    <button type="button" className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="back-btn">
+                    <button type="button" className={`relative md:px-10 md:py-5 py-3 px-2 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="back-btn">
                         <svg className='overflow-visible stroke-black stroke-2 fill-gray-500 absolute inset-0 w-full h-full hover:fill-gray-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
                             <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                        </svg>
                         <span className='pointer-events-none z-20'>
@@ -220,7 +220,7 @@ function Result() {
                     </button>
                 </Link>
 
-                <button type="button" onClick={copyToClipboard} className={`relative px-10 py-5 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="copy-to-clipboard-btn">
+                <button type="button" onClick={copyToClipboard} className={`relative md:px-10 md:py-5 py-3 px-2 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="copy-to-clipboard-btn">
                     <svg className='overflow-visible stroke-black stroke-2 fill-lime-500 absolute inset-0 w-full h-full hover:fill-lime-700 hover:drop-shadow-sm' viewBox="0 0 380 154" preserveAspectRatio="none">
                         <path d="M369.813 15.298c-21.977-21.035-342.104-19.72-359.63 0C-7.342 35.018-.979 123.755 19 141.503c19.98 17.748 300.864 15.119 328.836 0 27.971-15.118 43.954-105.17 21.977-126.205"/>                    </svg>
                     <span className='pointer-events-none z-20'>

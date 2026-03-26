@@ -82,16 +82,16 @@ function Home() {
   return (
     <>
     <ToastContainer />
-    <div className='flex min-h-dvh w-full overflow-y-auto'>
-      <div className='builder-panel flex flex-2 items-center justify-center flex-col p-[10vh] min-h-dvh gap-[3vh] overflow-y-auto'>
+    <div className='parent flex flex-col md:flex-row md:min-h-dvh w-full overflow-y-auto'>
+      <div className='child2 md:child1 builder-panel flex flex-2 items-center justify-center flex-col px-3 py-[10vh] md:p-[10vh] min-h-dvh gap-[3vh] overflow-y-auto'>
         <div className='flex items-center justify-center flex-col gap-1 overflow-visible'>
           <h1 className='title text-7xl'>teambuildr</h1>
           <div>Divide a party into teams!</div>
         </div>
         <div className='flex items-center justify-center flex-col gap-1 overflow-y-auto w-full'>
           <h2 className='text-lg font-bold'>Party Members</h2>
-          <label htmlFor="member_field">Enter the name of a party member!</label>
-          <div className="w-[70%] flex items-center gap-2 p-2">
+          <label className='text-center' htmlFor="member_field">Enter the name of a party member!</label>
+          <div className="md:w-[70%] flex items-center gap-2 p-2">
             <input maxLength={30} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="member_field" type="text" placeholder="e.g. Santa Claus" required
             onKeyDown={(e) => {
               if (e.key === "Enter") addMember(document.getElementById("member_field").value);
@@ -107,16 +107,16 @@ function Home() {
             </button>
           </div>
         </div>
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center justify-center text-center gap-4'>
           <h2 className='text-lg font-bold'>Party List</h2>
-          <div className='overflow-y-auto max-h-[50vh] border border-gray-300 rounded-lg px-[2vw] py-[2vh] w-[30vw] flex flex-col items-center gap-2 py-3 field-sizing-content' id="party-list">
+          <div className='overflow-y-auto max-h-[50vh] border border-gray-300 rounded-lg px-[2vw] py-[2vh] md:w-[100%] flex flex-col items-center gap-2 py-3 field-sizing-content' id="party-list">
             {members.length === 0 && <div className='w-full border border-gray-300 rounded-lg px-[2vw] py-[1vh] text-center'>No members added yet.</div>}
             {members.map((member) => (
               <Member key={member.id} name={member.name} onEdit={(newName) => editMember(member.id, newName)} onRemove={() => removeMember(member.id)} />
             ))}
           </div>
         </div>
-        <div className='flex items-center justify-around gap-5 w-[30vw]'>
+        <div className='flex items-center justify-around gap-5 md:w-[30vw]'>
           <div className='flex justify-around items-center gap-3 border border-gray-300 rounded-lg px-4 py-2 flex-1 text-center'>
             <div>
               <div className='font-bold text-2xl'>{numTeams}</div>
@@ -151,7 +151,7 @@ function Home() {
           </button>
         </div>
       </div>
-      <div className='home-anim flex-2'></div>
+      <div className='child1 order-first md:order-last home-anim md:flex-[2] md:h-auto h-[200px]'></div>
     </div>
     <Footer />
     </>
