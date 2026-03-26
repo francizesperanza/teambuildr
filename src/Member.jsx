@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
 
 
 function Member({name, onEdit, onRemove}) {
@@ -6,14 +7,28 @@ function Member({name, onEdit, onRemove}) {
     const [newName, setNewName] = useState(name);
 
     const saveEdit = () => {
+        if (newName.length === 0) {
+            toast.error('You need a name!', {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
         onEdit(newName);
         setEditing(false);
     }
 
     return (
         <>
+            <ToastContainer />
             <div className='flex items-center gap-[1vw] bg-gray-100 rounded-lg px-[1vw] py-[2vh] w-full place-content-between hover:bg-gray-200'>
-                <input type="text" value={editing ? newName : name} disabled={!editing}
+                <input type="text" maxLength={30} value={editing ? newName : name} disabled={!editing}
                 onChange={(e) => setNewName(e.target.value)}
                 className={`truncate text-wrap justify-between grow flex-wrap text-justify h-full w-full px-2 py-1 rounded ${editing ? 'bg-white' : 'bg-gray-300'}`}
                 onKeyDown={(e) => {

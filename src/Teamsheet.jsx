@@ -4,6 +4,7 @@ import './Teamsheet.css'
 import { Popover } from '@mui/material';
 import { CheckCircleIcon, CheckIcon } from '@heroicons/react/20/solid';
 import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import { ToastContainer, toast } from 'react-toastify';
 
 function Teamsheet({members, teamColor, teamIndex, teamName, onEdit, leader, leaderEnabled, animating, setAnimating}) {
   const scope = useRef(null);
@@ -32,6 +33,19 @@ function Teamsheet({members, teamColor, teamIndex, teamName, onEdit, leader, lea
   );
 
   const saveEdit = () => {
+      if (newTeamName.length === 0) {
+          toast.error('You need a team name!', {
+              position: "top-center",
+              autoClose: 2000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+          });
+          return;
+      }
       onEdit(newTeamName);
       setEditing(false);
   }
@@ -191,10 +205,11 @@ function Teamsheet({members, teamColor, teamIndex, teamName, onEdit, leader, lea
 
   return (
     <>
+    <ToastContainer></ToastContainer>
       <div ref={root} className='overflow-visible flex-[20%] flex items-center justify-center flex-col p-[.1vh] gap-3'>
         <div className={'flex gap-2 font-bold outline-dashed outline-black outline-2 text-center rounded-full px-[1vw] py-[1vh]' + (animating ? ' opacity-0' : ' opacity-100')}
           style={{backgroundColor: teamColor ? teamColor[1]: undefined}}>
-          <input ref={inputRef} type="text" className={'font-bold text-center cursor-default w-auto rounded-lg' + (editing ? ' bg-white' : ' bg-transparent')}
+          <input maxLength={30} ref={inputRef} type="text" className={'font-bold text-center cursor-default w-auto rounded-lg' + (editing ? ' bg-white' : ' bg-transparent')}
           value={(editing ? newTeamName : teamName) ?? ""} disabled={!editing}
           onChange={(e) => setNewTeamName(e.target.value)}
           onKeyDown={(e) => {
