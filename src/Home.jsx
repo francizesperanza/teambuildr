@@ -92,7 +92,7 @@ function Home() {
           <h2 className='text-lg font-bold'>Party Members</h2>
           <label className='text-center' htmlFor="member_field">Enter the name of a party member!</label>
           <div className="md:w-[70%] flex items-center gap-2 p-2">
-            <input maxLength={30} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" id="member_field" type="text" placeholder="e.g. Santa Claus" required
+            <input maxLength={30} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[rgb(132,204,22)]" id="member_field" type="text" placeholder="e.g. Santa Claus" required
             onKeyDown={(e) => {
               if (e.key === "Enter") addMember(document.getElementById("member_field").value);
             }}/>

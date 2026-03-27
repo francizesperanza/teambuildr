@@ -205,7 +205,7 @@ function Result() {
                     ))}
                 </div>
             </div>
-            <div className={'flex flex-row text-sm md:text-base justify-center items-center gap-5 bg-white px-3 w-full md:px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
+            <div className={'flex flex-row text-sm md:text-base justify-center items-center gap-5 bg-white px-3 w-full md:w-auto md:px-6 py-4 rounded-lg border-2 border-dashed ' + (animating ? 'opacity-0' : 'opacity-100')}>
                 <Link to="/"
                     state={members}>
                     <button type="button" className={`relative md:px-10 md:py-5 py-3 px-2 inline-flex items-center bg-transparent rounded-lg text-white cursor-pointer`} id="back-btn">
