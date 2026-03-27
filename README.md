@@ -4,7 +4,7 @@
 
 ![Home](https://github.com/francizesperanza/teambuildr/blob/main/readme_imgs/teambuildr_home.png?raw=true)
 
-[VERSION 1.1]
+[VERSION 1.2]
 
 Features:
 - create up to 10 teams!
@@ -12,15 +12,14 @@ Features:
 - teams can be copied to clipboard!
 - unlimited members
 - leaders can be assigned!
+- responsive design for small screens!
 
 ![Randomizing Sample](https://github.com/francizesperanza/teambuildr/blob/main/readme_imgs/teambuildr_sample.png?raw=true)
 
 Coming Soon:
-- inputting members QOL
 - other theme names
 - export as PNG
 - more design changes
-- responsive design
 
 Attributions:
 
